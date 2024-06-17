@@ -1,0 +1,7 @@
+<div *ngIf="loading$ | async">Laden...</div>
+<div *ngIf="error$ | async as error">Fehler: {{ error.message }}</div>
+<ul>
+  <li *ngFor="let planet of planets$ | async">
+    {{ planet.englishName }}
+  </li>
+</ul>
