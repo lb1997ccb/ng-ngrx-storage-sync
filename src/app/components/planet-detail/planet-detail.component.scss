@@ -1,0 +1,14 @@
+.mat-mdc-card-content {
+  overflow-x: auto;
+}
+
+@media (max-width: 600px) {
+  .mat-mdc-card-content {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+.mat-mdc-card-title {
+  color: white;
+}

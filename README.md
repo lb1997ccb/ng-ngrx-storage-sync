@@ -1,27 +1,102 @@
-# NgrxSolarSystem
+# Angular NgRx Storage Sync
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.4.
+![Angular NgRx Storage Sync]
 
-## Development server
+## Overview
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+The **Angular NgRx Storage Sync** project combines Angular with NgRx for advanced state management and synchronized data storage using localStorage. This project ensures seamless synchronization of application state across sessions, providing enhanced persistence and reliability for Angular applications.
 
-## Code scaffolding
+## Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **NgRx Integration:** Utilizes NgRx for managing complex application states with predictable state management.
 
-## Build
+- **LocalStorage Synchronization:** Implements synchronized storage mechanisms like localStorage to persist application state between browser sessions.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Example: Persistence Service**
 
-## Running unit tests
+  The `StatePersistenceService` ensures that the application state is loaded from localStorage on initialization:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+  ```typescript
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class StatePersistenceService {
+  
+    constructor(private store: Store<PlanetState>) {
+      this.loadState();
+    }
+  
+    loadState() {
+      try {
+        const storedState = localStorage.getItem('planets');
+        if (storedState) {
+          this.store.dispatch(loadPlanetsSuccess({ planets: JSON.parse(storedState).planets }));
+        }
+      } catch (error) {
+        console.error('Error loading persisted state:', error);
+      }
+    }
+  }
 
-## Running end-to-end tests
+- **Example: Planets with Details**
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+  The PlanetDetailComponent demonstrates how to display detailed information about planets fetched from an API using NgRx:
 
-## Further help
+  ```
+  @Component({
+    selector: 'app-planet-detail',
+    templateUrl: './planet-detail.component.html',
+    styleUrls: ['./planet-detail.component.scss']
+  })
+  export class PlanetDetailComponent implements OnInit {
+    planet$: Observable<Planet | null>;
+  
+    loading$: Observable<boolean>;
+    error$: Observable<any>;
+  
+    constructor(
+      private route: ActivatedRoute,
+      private store: Store<PlanetState>
+    ) {
+      this.planet$ = this.store.pipe(
+        select(planetSelectors.selectSelectedPlanet),
+      );
+      this.loading$ = this.store.pipe(
+        select(planetSelectors.selectPlanetLoading),
+      );
+      this.error$ = this.store.pipe(select(planetSelectors.selectPlanetError));
+    }
+  
+    ngOnInit(): void {
+      this.route.paramMap.subscribe((params) => {
+        const planetId = params.get('id');
+        if (planetId) {
+          this.store.dispatch(planetActions.loadPlanet({ id: planetId }));
+        }
+      });
+    }
+  }
+  ```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Getting Started
+
+To get started with **Angular NgRx Storage Sync**, follow these steps:
+
+1. Clone this repository.
+2. Install dependencies using `npm install`.
+3. Run the application using `ng serve`.
+
+## Technologies Used
+
+- Angular
+- NgRx
+- TypeScript
+- HTML/CSS
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Fork the repository and submit a pull request.

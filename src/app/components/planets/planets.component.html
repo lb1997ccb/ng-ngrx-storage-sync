@@ -1,7 +1,33 @@
 <div *ngIf="loading$ | async">Laden...</div>
-<div *ngIf="error$ | async as error">Fehler: {{ error.message }}</div>
-<ul>
-  <li *ngFor="let planet of planets$ | async">
-    {{ planet.englishName }}
-  </li>
-</ul>
+
+<div *ngIf="error$ | async as error">
+  <mat-card>
+    <mat-card-content>
+      Fehler: {{ error.message }}
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div *ngIf="planets$ | async as planets">
+  <div class="card-container">
+    <mat-card class="card" *ngFor="let planet of planets">
+      <mat-card-header>
+        <div mat-card-avatar class="planet-avatar"></div>
+        <mat-card-title>
+          <a [routerLink]="['/planet', planet.id]">{{ planet.name }}</a>
+        </mat-card-title>
+        <mat-card-subtitle>{{ planet.englishName }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Weitere Details des Planeten hier einfügen, wenn nötig -->
+      </mat-card-content>
+      <mat-card-actions>
+        <!-- Aktionen, falls erforderlich -->
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div *ngIf="planets.length === 0">
+    Keine Planeten gefunden.
+  </div>
+</div>
