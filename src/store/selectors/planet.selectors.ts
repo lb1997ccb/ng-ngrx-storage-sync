@@ -18,19 +18,16 @@ export const selectPlanetsError = createSelector(
   (state: PlanetState) => state.error,
 );
 
-// Selektor für den ausgewählten Planeten (basierend auf der ID)
 export const selectSelectedPlanet = createSelector(
   selectPlanetState,
   (state: PlanetState) => state.selectedPlanet,
 );
 
-// Selektor für den Ladezustand (während Daten geladen werden)
 export const selectPlanetLoading = createSelector(
   selectPlanetState,
   (state: PlanetState) => state.loading,
 );
 
-// Selektor für Fehler beim Laden der Daten
 export const selectPlanetError = createSelector(
   selectPlanetState,
   (state: PlanetState) => state.error,
