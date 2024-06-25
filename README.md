@@ -18,31 +18,31 @@ The **Angular NgRx Storage Sync** project combines Angular with NgRx for advance
 
   ```typescript
   @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
   })
   export class StatePersistenceService {
-  
     constructor(private store: Store<PlanetState>) {
       this.loadState();
     }
-  
+
     loadState() {
       try {
-        const storedState = localStorage.getItem('planets');
+        const storedState = localStorage.getItem("planets");
         if (storedState) {
           this.store.dispatch(loadPlanetsSuccess({ planets: JSON.parse(storedState).planets }));
         }
       } catch (error) {
-        console.error('Error loading persisted state:', error);
+        console.error("Error loading persisted state:", error);
       }
     }
   }
+  ```
 
 - **Example: Planets with Details**
 
   The PlanetDetailComponent demonstrates how to display detailed information about planets fetched from an API using NgRx:
 
-  ```
+  ```typescript
   @Component({
     selector: 'app-planet-detail',
     templateUrl: './planet-detail.component.html',
@@ -50,10 +50,10 @@ The **Angular NgRx Storage Sync** project combines Angular with NgRx for advance
   })
   export class PlanetDetailComponent implements OnInit {
     planet$: Observable<Planet | null>;
-  
+
     loading$: Observable<boolean>;
     error$: Observable<any>;
-  
+
     constructor(
       private route: ActivatedRoute,
       private store: Store<PlanetState>
@@ -66,7 +66,7 @@ The **Angular NgRx Storage Sync** project combines Angular with NgRx for advance
       );
       this.error$ = this.store.pipe(select(planetSelectors.selectPlanetError));
     }
-  
+
     ngOnInit(): void {
       this.route.paramMap.subscribe((params) => {
         const planetId = params.get('id');
