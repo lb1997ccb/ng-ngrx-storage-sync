@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { Planet } from '../../../store/models/planet.model';
 import * as planetSelectors from '../../../store/selectors/planet.selectors';
 import * as planetActions from '../../../store/actions/planet.actions';
-import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-planet-detail',
@@ -16,7 +15,8 @@ export class PlanetDetailComponent implements OnInit {
   planet$: Observable<Planet | null>; // Observable to hold the selected planet
   loading$: Observable<boolean>; // Observable to track loading state
   error$: Observable<any>; // Observable to handle errors
-  displayedColumns: string[] = [ // Array to define displayed table columns
+  displayedColumns: string[] = [
+    // Array to define displayed table columns
     'id',
     'name',
     'englishName',
@@ -38,11 +38,15 @@ export class PlanetDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute, // Inject ActivatedRoute to access route parameters
     private store: Store, // Inject NgRx Store service to dispatch actions and select data
-    private location: Location // Inject Location to handle back navigation
+    private router: Router,
   ) {
     // Initialize observables by selecting state slices using selectors
-    this.planet$ = this.store.pipe(select(planetSelectors.selectSelectedPlanet));
-    this.loading$ = this.store.pipe(select(planetSelectors.selectPlanetLoading));
+    this.planet$ = this.store.pipe(
+      select(planetSelectors.selectSelectedPlanet),
+    );
+    this.loading$ = this.store.pipe(
+      select(planetSelectors.selectPlanetLoading),
+    );
     this.error$ = this.store.pipe(select(planetSelectors.selectPlanetError));
   }
 
@@ -60,14 +64,16 @@ export class PlanetDetailComponent implements OnInit {
   // Function to format planet's mass
   formatMass(planet: Planet): string {
     if (planet.mass && planet.mass.massValue && planet.mass.massExponent) {
-      return (planet.mass.massValue * Math.pow(10, planet.mass.massExponent)).toLocaleString();
+      return (
+        planet.mass.massValue * Math.pow(10, planet.mass.massExponent)
+      ).toLocaleString();
     } else {
       return 'N/A';
     }
   }
 
-  // Function to navigate back to previous location
-  goBack(): void {
-    this.location.back();
+  // Function to navigate back to the planets page
+  goBackToPlanets(): void {
+    this.router.navigate(['/planets']);
   }
 }

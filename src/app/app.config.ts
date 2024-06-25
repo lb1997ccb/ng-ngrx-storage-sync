@@ -6,25 +6,25 @@ import {
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import {combineReducers, provideStore, StoreModule} from '@ngrx/store';
+import { combineReducers, provideStore, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideHttpClient } from '@angular/common/http';
-import {localStorageSync} from "ngrx-store-localstorage";
-import {reducers} from "../store/reducers/planet.reducer";
+import { localStorageSync } from 'ngrx-store-localstorage';
+import { reducers } from '../store/reducers/planet.reducer';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-
 
 /**
  * Meta-reducer that syncs a portion of the store state to localStorage.
  * @param reducer - The base reducer to enhance with localStorage sync.
  * @returns A new reducer function that includes localStorage syncing.
  */
-export const localStorageSyncReducer = (reducer: any) => localStorageSync({
-  keys: ['planets'], // Specify which state keys to sync to localStorage
-  rehydrate: true, // Rehydrate the state from localStorage on app load
-  checkStorageAvailability: true // Ensure localStorage is available before syncing
-})(reducer);
+export const localStorageSyncReducer = (reducer: any) =>
+  localStorageSync({
+    keys: ['planets'], // Specify which state keys to sync to localStorage
+    rehydrate: true, // Rehydrate the state from localStorage on app load
+    checkStorageAvailability: true, // Ensure localStorage is available before syncing
+  })(reducer);
 
 /**
  * Array of meta-reducers applied to the root reducer.

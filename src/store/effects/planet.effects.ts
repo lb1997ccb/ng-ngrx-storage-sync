@@ -14,7 +14,6 @@ import {
 
 @Injectable()
 export class PlanetEffects {
-
   // Effect to load all planets
   loadPlanets$ = createEffect(() =>
     this.actions$.pipe(

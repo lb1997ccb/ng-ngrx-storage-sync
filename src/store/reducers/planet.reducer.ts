@@ -1,5 +1,5 @@
-import {Action, ActionReducerMap, createReducer, on} from '@ngrx/store';
-import {initialState, PlanetState} from '../types';
+import { Action, ActionReducerMap, createReducer, on } from '@ngrx/store';
+import { initialState, PlanetState } from '../types';
 import {
   loadPlanet,
   loadPlanetFailure,

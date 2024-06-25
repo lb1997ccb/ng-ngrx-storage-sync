@@ -8,7 +8,7 @@ import {
   selectPlanetsLoading,
 } from '../../../store/selectors/planet.selectors';
 import { loadPlanets } from '../../../store/actions/planet.actions';
-import {StatePersistenceService} from "../../services/state-persistence.service";
+import { StatePersistenceService } from '../../services/state-persistence.service';
 
 @Component({
   selector: 'app-planets',
@@ -22,7 +22,7 @@ export class PlanetsComponent implements OnInit {
 
   constructor(
     private store: Store, // Inject NgRx Store service to dispatch actions and select data
-    private statePersistenceService: StatePersistenceService // Inject StatePersistenceService to handle state caching
+    private statePersistenceService: StatePersistenceService, // Inject StatePersistenceService to handle state caching
   ) {
     // Initialize observables by selecting state slices using NgRx selectors
     this.planets$ = this.store.select(selectAllPlanets);
@@ -39,7 +39,9 @@ export class PlanetsComponent implements OnInit {
     } else {
       // Dispatch action to load planets from API if not found in cache
       this.store.dispatch(loadPlanets());
-      console.log('Dispatched loadPlanets action as planets were not found in cache.');
+      console.log(
+        'Dispatched loadPlanets action as planets were not found in cache.',
+      );
     }
   }
 }

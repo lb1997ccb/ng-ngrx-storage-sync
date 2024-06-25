@@ -27,12 +27,16 @@ export class PlanetService {
    * Fetches all planets from the API.
    * @returns An Observable of an array of Planet objects.
    */
-  getPlanets(): Observable<Planet[]> {
-    return this.http.get<{ bodies: any[] }>(`${this.apiUrl}bodies/`)
-      .pipe(
-        // Transform the API response to return an array of Planet objects
-        map(response => this.transformToPlanets(response.bodies))
-      );
+  getPlanets(limit: number = 20): Observable<Planet[]> {
+    return this.http.get<{ bodies: any[] }>(`${this.apiUrl}bodies/`).pipe(
+      // Transform the API response to return an array of Planet objects
+      map(
+        (response) =>
+          this.transformToPlanets(response.bodies)
+            .filter((planet) => planet.isPlanet) // Filter planets to include only those with isPlanet: true
+            .slice(0, limit), // Limit to the first 20 planets
+      ),
+    );
   }
 
   /**
@@ -41,11 +45,10 @@ export class PlanetService {
    * @returns An Observable of a Planet object.
    */
   getPlanetById(id: string): Observable<Planet> {
-    return this.http.get<any>(`${this.apiUrl}bodies/${id}`)
-      .pipe(
-        // Transform the API response to a Planet object
-        map(this.transformToPlanet)
-      );
+    return this.http.get<any>(`${this.apiUrl}bodies/${id}`).pipe(
+      // Transform the API response to a Planet object
+      map(this.transformToPlanet),
+    );
   }
 
   /**
@@ -67,20 +70,26 @@ export class PlanetService {
       id: data.id,
       name: data.englishName || data.name,
       isPlanet: data.isPlanet,
-      moons: data.moons ? data.moons.map((moon: any) => ({ moon: moon.moon })) : null,
+      moons: data.moons
+        ? data.moons.map((moon: any) => ({ moon: moon.moon }))
+        : null,
       semimajorAxis: data.semimajorAxis,
       perihelion: data.perihelion,
       aphelion: data.aphelion,
       eccentricity: data.eccentricity,
       inclination: data.inclination,
-      mass: data.mass ? {
-        massValue: data.mass.massValue,
-        massExponent: data.mass.massExponent
-      } : undefined,
-      vol: data.vol ? {
-        volValue: data.vol.volValue,
-        volExponent: data.vol.volExponent
-      } : undefined,
+      mass: data.mass
+        ? {
+            massValue: data.mass.massValue,
+            massExponent: data.mass.massExponent,
+          }
+        : undefined,
+      vol: data.vol
+        ? {
+            volValue: data.vol.volValue,
+            volExponent: data.vol.volExponent,
+          }
+        : undefined,
       density: data.density,
       gravity: data.gravity,
       escape: data.escape,
@@ -91,10 +100,12 @@ export class PlanetService {
       dimension: data.dimension,
       sideralOrbit: data.sideralOrbit,
       sideralRotation: data.sideralRotation,
-      aroundPlanet: data.aroundPlanet ? {
-        planet: data.aroundPlanet.planet,
-        rel: data.aroundPlanet.rel
-      } : undefined,
+      aroundPlanet: data.aroundPlanet
+        ? {
+            planet: data.aroundPlanet.planet,
+            rel: data.aroundPlanet.rel,
+          }
+        : undefined,
       discoveredBy: data.discoveredBy,
       discoveryDate: data.discoveryDate,
       alternativeName: data.alternativeName,

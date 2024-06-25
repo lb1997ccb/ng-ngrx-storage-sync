@@ -3,7 +3,10 @@ import { Planet } from '../models/planet.model';
 
 export const loadPlanets = createAction('[Planet] Load Planets');
 
-export const loadState = createAction('[App] Load State', props<{ state: any }>());
+export const loadState = createAction(
+  '[App] Load State',
+  props<{ state: any }>(),
+);
 
 export const loadPlanetsSuccess = createAction(
   '[Planet] Load Planets Success',
