@@ -31,16 +31,16 @@ export class PlanetsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Check if planets are cached in local storage
-    if (this.statePersistenceService.hasCachedPlanets()) {
-      // Load planets state from cache if available
+    // Check if planets are stored in local storage
+    if (this.statePersistenceService.hasStoredPlanets()) {
+      // Load planets state from store if available
       this.statePersistenceService.loadPlanetsState();
-      console.log('Loaded planets from cache.');
+      console.log('Loaded planets from store.');
     } else {
-      // Dispatch action to load planets from API if not found in cache
+      // Dispatch action to load planets from API if not found in store
       this.store.dispatch(loadPlanets());
       console.log(
-        'Dispatched loadPlanets action as planets were not found in cache.',
+        'Dispatched loadPlanets action as planets were not found in store.',
       );
     }
   }

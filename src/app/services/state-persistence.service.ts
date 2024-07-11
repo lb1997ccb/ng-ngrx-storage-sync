@@ -30,9 +30,9 @@ export class StatePersistenceService {
 
   /**
    * Checks if planets data is stored in local storage.
-   * @returns {boolean} True if planets data is available in the cache, otherwise false.
+   * @returns {boolean} True if planets data is available in the store, otherwise false.
    */
-  hasCachedPlanets(): boolean {
+  hasStoredPlanets(): boolean {
     return !!localStorage.getItem('planets');
   }
 }
